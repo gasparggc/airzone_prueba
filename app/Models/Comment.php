@@ -19,7 +19,7 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function users(): BelongsTo
+    public function writer(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
