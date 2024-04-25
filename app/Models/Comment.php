@@ -14,14 +14,18 @@ class Comment extends Model
 
     public $timestamps = false;
 
-    public function post(): BelongsTo
-    {
+    public function post(){
         return $this->belongsTo(Post::class);
     }
 
-    public function writer(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
+    public function writer(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function search_by_post_id($post_id){
+
+        $comment = Comment::where('post_id', $post_id)->get();
+
+        return $comment;
+    }
 }

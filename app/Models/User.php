@@ -28,18 +28,15 @@ class User extends Authenticatable
         'full_name',
     ];
 
-    public function comments(): HasMany
-    {
+    public function comments(){
         return $this->hasMany(Comment::class);
     }
 
-    public function post(): HasMany
-    {
+    public function post(){
         return $this->hasMany(Post::class);
     }
 
-    public function userCategories(): HasManyThrough
-    {
+    public function userCategories(){
         return $this->hasManyThrough(Category::class, Post::class);
     }
 }
