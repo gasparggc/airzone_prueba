@@ -30,25 +30,13 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function search($id){
-        $post = Post::find($id);
-
-        return $post;
+    public function postComments(){
+        return $this->hasManyThrough(User::class, Comment::class);
     }
 
-    /*      Probe a hacer todo en una misma consulta sin tener que llamar a dos modelos distintos
-    * pero como resultado obtenía tantos objetos como comentarios distintos, así que para
-    * facilitar el código finalmente me decanté por llamar a los 2 modelos Post y Comment.
-    */
     public function post_activity($id){
 
-        $post = DB::table('posts')
-        ->join('users as owners', 'posts.user_id', '=','owners.id')
-        ->leftjoin('comments', 'posts.id', '=','comments.post_id')
-        ->leftjoin('users as writers', 'comments.user_id', '=','writers.id')
-        ->select('posts.id','posts.title','posts.short_content', 'owners.username as owner','comments.content as comments','writers.username as writer')
-        ->where('posts.id', $id)
-        ->get();
+        $post = Post::with('comments.writer')->find($id);
 
         return $post;
     }
